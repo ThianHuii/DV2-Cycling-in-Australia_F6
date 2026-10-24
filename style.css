@@ -115,3 +115,7 @@
 .conclusion-columns ul{margin:0;padding-left:23px;font-size:20px;line-height:1.6;color:#f0f3e9}
 .conclusion-columns li{padding-left:3px;margin:0 0 12px}
 .conclusion-columns li:last-child{margin-bottom:0}
+
+/* Keep only the requested figure plots full-width and centred. */
+.figure-3 .figure-layout,.figure-4 .figure-layout,.figure-5 .figure-layout,.figure-6 .figure-layout,.figure-7 .figure-layout,.figure-8 .figure-layout,.figure-10 .figure-layout,.figure-11 .figure-layout{align-items:stretch}
+.figure-3 .plot-column,.figure-4 .plot-column,.figure-5 .plot-column,.figure-6 .plot-column,.figure-7 .plot-column,.figure-8 .plot-column,.figure-10 .plot-column,.figure-11 .plot-column{width:100%;max-width:100%;min-width:0}

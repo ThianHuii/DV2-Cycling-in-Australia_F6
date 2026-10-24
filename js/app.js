@@ -9,11 +9,11 @@
   await document.fonts.ready;
   const views=new Map();
   const hosts=[...document.querySelectorAll('[data-spec]')];
-  const margins={1:55,2:60,3:160,4:120,5:220,6:360,7:80,8:80,9:80,10:60,11:60,12:80};
+  const margins={1:55,2:60,3:80,4:120,5:140,6:180,7:80,8:80,9:80,10:60,11:60,12:80};
   function adapt(spec,host,correction=0){
     const n=+host.id.replace('chart-','');
     const available=host.clientWidth||620;
-    const width=Math.min(n===1?520:1000,Math.max(n===10?820:n===11?620:330,available-(margins[n]||90)-correction));
+    const width=Math.min(n===1?520:[10,11].includes(n)?1300:1000,Math.max(n===10?820:n===11?620:330,available-(margins[n]||90)-correction));
     function visit(node){
       if(!node||typeof node!=='object')return;
       if(node.usermeta?.fixedLegend && !node.usermeta?.lockColumns && available<780){
@@ -62,7 +62,7 @@
   async function render(host){
     try{
       const specURL=new URL(host.dataset.spec,window.location.href);
-      specURL.searchParams.set('v','spacing-8');
+      specURL.searchParams.set('v','centre-9');
       const response=await fetch(specURL);
       if(!response.ok)throw new Error(`Chart returned ${response.status}`);
       const original=await response.json();
