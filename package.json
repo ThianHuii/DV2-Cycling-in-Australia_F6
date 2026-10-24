@@ -1,0 +1,1 @@
+{"name":"australia-on-two-wheels","private":true,"version":"2.0.0","description":"Static GitHub Pages cycling visualisation; no build required","scripts":{"check":"node scripts/validate.cjs"},"devDependencies":{"vega":"5.33.1","vega-lite":"5.23.0"}}

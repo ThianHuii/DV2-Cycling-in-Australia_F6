@@ -1,0 +1,337 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "font": "Source Sans 3",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "labelColor": "#33463e",
+      "titleColor": "#33463e",
+      "titlePadding": 14,
+      "gridColor": "#e2e8e3",
+      "labelLimit": 230
+    },
+    "legend": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "orient": "bottom",
+      "titleLimit": 600,
+      "labelLimit": 300
+    },
+    "text": {
+      "fontSize": 18
+    },
+    "title": {
+      "font": "Bree Serif",
+      "fontSize": 28,
+      "anchor": "start"
+    }
+  },
+  "background": "#ffffff",
+  "padding": 15,
+  "spacing": 8,
+  "vconcat": [
+    {
+      "width": 620,
+      "height": 52,
+      "data": {
+        "values": [
+          {
+            "Note": "Cars account for 85% of these\njourneys."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "font": "Source Sans 3",
+        "fontSize": 18,
+        "fontWeight": "normal",
+        "fontStyle": "italic",
+        "color": "#41594d",
+        "align": "left",
+        "baseline": "top",
+        "lineBreak": "\n",
+        "lineHeight": 24
+      },
+      "encoding": {
+        "x": {
+          "value": 0
+        },
+        "y": {
+          "value": 0
+        },
+        "text": {
+          "field": "Note"
+        }
+      }
+    },
+    {
+      "spacing": 20,
+      "width": 520,
+      "height": 130,
+      "data": {
+        "url": "data/journey-to-work.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "Count2021": "number",
+            "Count2016": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "filter": "indexof(['Total','Worked at home','Did not go to work','Not stated'],datum.Mode)<0"
+        },
+        {
+          "calculate": "indexof(['Car, as driver','Car, as passenger'],datum.Mode)>=0 ? 'Car' : indexof(['Train','Bus','Tram/light rail','Ferry'],datum.Mode)>=0 ? 'Public transport' : datum.Mode==='Walked only' ? 'Walked' : datum.Mode==='Bicycle' ? 'Bicycle' : 'Other'",
+          "as": "mode"
+        },
+        {
+          "aggregate": [
+            {
+              "op": "sum",
+              "field": "Count2021",
+              "as": "people"
+            }
+          ],
+          "groupby": [
+            "mode"
+          ]
+        },
+        {
+          "calculate": "indexof(['Car','Public transport','Walked','Bicycle','Other'],datum.mode)",
+          "as": "order"
+        },
+        {
+          "joinaggregate": [
+            {
+              "op": "sum",
+              "field": "people",
+              "as": "totalPeople"
+            }
+          ]
+        },
+        {
+          "calculate": "datum.people/datum.totalPeople",
+          "as": "share"
+        },
+        {
+          "window": [
+            {
+              "op": "sum",
+              "field": "share",
+              "as": "cumulative"
+            }
+          ],
+          "sort": [
+            {
+              "field": "order"
+            }
+          ],
+          "frame": [
+            null,
+            0
+          ]
+        },
+        {
+          "calculate": "round(datum.cumulative*100)",
+          "as": "end"
+        },
+        {
+          "calculate": "round((datum.cumulative-datum.share)*100)",
+          "as": "start"
+        },
+        {
+          "calculate": "sequence(datum.start,datum.end)",
+          "as": "index"
+        },
+        {
+          "flatten": [
+            "index"
+          ]
+        },
+        {
+          "calculate": "datum.index%20",
+          "as": "column"
+        },
+        {
+          "calculate": "floor(datum.index/20)",
+          "as": "row"
+        }
+      ],
+      "mark": {
+        "type": "rect",
+        "cornerRadius": 3,
+        "stroke": "#ffffff",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "column",
+          "type": "ordinal",
+          "sort": "ascending",
+          "axis": null,
+          "scale": {
+            "paddingInner": 0.12,
+            "paddingOuter": 0.02
+          }
+        },
+        "y": {
+          "field": "row",
+          "type": "ordinal",
+          "sort": "ascending",
+          "axis": null,
+          "scale": {
+            "paddingInner": 0.12,
+            "paddingOuter": 0.02
+          }
+        },
+        "color": {
+          "field": "mode",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Car",
+              "Public transport",
+              "Walked",
+              "Bicycle",
+              "Other"
+            ],
+            "range": [
+              "#55616b",
+              "#0072b2",
+              "#8b572a",
+              "#00796b",
+              "#aaa89b"
+            ]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {
+            "field": "mode",
+            "type": "nominal",
+            "title": "Travel mode"
+          },
+          {
+            "field": "share",
+            "type": "quantitative",
+            "title": "Share of reported transport modes",
+            "format": ".1%"
+          },
+          {
+            "field": "people",
+            "type": "quantitative",
+            "title": "Number of people",
+            "format": ","
+          }
+        ]
+      }
+    },
+    {
+      "width": 440,
+      "height": 96,
+      "usermeta": {
+        "fixedLegend": true
+      },
+      "data": {
+        "values": [
+          {
+            "Label": "Car",
+            "Colour": "#55616b",
+            "X": 12,
+            "TextX": 30,
+            "Y": 16
+          },
+          {
+            "Label": "Public transport",
+            "Colour": "#0072b2",
+            "X": 232,
+            "TextX": 250,
+            "Y": 16
+          },
+          {
+            "Label": "Walked",
+            "Colour": "#8b572a",
+            "X": 12,
+            "TextX": 30,
+            "Y": 46
+          },
+          {
+            "Label": "Bicycle",
+            "Colour": "#00796b",
+            "X": 232,
+            "TextX": 250,
+            "Y": 46
+          },
+          {
+            "Label": "Other",
+            "Colour": "#aaa89b",
+            "X": 12,
+            "TextX": 30,
+            "Y": 76
+          }
+        ]
+      },
+      "encoding": {
+        "y": {
+          "field": "Y",
+          "type": "quantitative",
+          "scale": null,
+          "axis": null
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "point",
+            "shape": "square",
+            "filled": true,
+            "size": 130,
+            "opacity": 1
+          },
+          "encoding": {
+            "x": {
+              "field": "X",
+              "type": "quantitative",
+              "scale": null,
+              "axis": null
+            },
+            "color": {
+              "field": "Colour",
+              "type": "nominal",
+              "scale": null,
+              "legend": null
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "font": "Source Sans 3",
+            "fontSize": 18,
+            "align": "left",
+            "baseline": "middle",
+            "color": "#33463e"
+          },
+          "encoding": {
+            "x": {
+              "field": "TextX",
+              "type": "quantitative",
+              "scale": null,
+              "axis": null
+            },
+            "text": {
+              "field": "Label"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "center": true
+}

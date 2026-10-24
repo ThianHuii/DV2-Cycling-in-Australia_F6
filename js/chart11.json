@@ -1,0 +1,220 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "font": "Source Sans 3",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "labelColor": "#33463e",
+      "titleColor": "#33463e",
+      "titlePadding": 14,
+      "gridColor": "#e2e8e3",
+      "labelLimit": 230
+    },
+    "legend": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "orient": "bottom",
+      "titleLimit": 600,
+      "labelLimit": 300
+    },
+    "text": {
+      "fontSize": 18
+    },
+    "title": {
+      "font": "Bree Serif",
+      "fontSize": 28,
+      "anchor": "start"
+    }
+  },
+  "spacing": 8,
+  "vconcat": [
+    {
+      "width": 620,
+      "height": 52,
+      "data": {
+        "values": [
+          {
+            "Note": "Sydney City contributes 54.3% of the\nrecorded regional total."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "font": "Source Sans 3",
+        "fontSize": 18,
+        "fontWeight": "normal",
+        "fontStyle": "italic",
+        "color": "#41594d",
+        "align": "left",
+        "baseline": "top",
+        "lineBreak": "\n",
+        "lineHeight": 24
+      },
+      "encoding": {
+        "x": {
+          "value": 0
+        },
+        "y": {
+          "value": 0
+        },
+        "text": {
+          "field": "Note"
+        }
+      }
+    },
+    {
+      "width": 620,
+      "height": 280,
+      "data": {
+        "url": "data/regions.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "bicycle_count_2018": "number",
+            "share_pct": "number"
+          }
+        }
+      },
+      "encoding": {
+        "y": {
+          "field": "Region",
+          "type": "nominal",
+          "sort": [
+            "Sydney City",
+            "Inner West",
+            "Inner North",
+            "Other",
+            "North West"
+          ],
+          "axis": null
+        },
+        "x": {
+          "field": "Count",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              5200
+            ],
+            "rangeMin": 150,
+            "rangeMax": 620
+          },
+          "axis": {
+            "title": "Recorded bicycle count",
+            "format": ",.0f",
+            "tickCount": 5
+          }
+        },
+        "tooltip": [
+          {
+            "field": "Region"
+          },
+          {
+            "field": "Count",
+            "format": ","
+          },
+          {
+            "field": "Share",
+            "title": "Share (%)",
+            "format": ".1f"
+          }
+        ]
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "rule",
+            "strokeWidth": 4,
+            "color": "#b7c2c6"
+          },
+          "encoding": {
+            "x2": {
+              "datum": 0
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "circle",
+            "size": 220
+          },
+          "encoding": {
+            "color": {
+              "condition": {
+                "test": "datum.Region==='Sydney City'",
+                "value": "#384f5a"
+              },
+              "value": "#8c9ca4"
+            }
+          }
+        },
+        {
+          "transform": [
+            {
+              "calculate": "format(datum.Count, ',') + ' (' + format(datum.Share, '.1f') + '%)'",
+              "as": "Label"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dx": 14,
+            "fontSize": 18,
+            "color": "#384f5a"
+          },
+          "encoding": {
+            "text": {
+              "field": "Label"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "fontSize": 18,
+            "color": "#33463e"
+          },
+          "encoding": {
+            "x": {
+              "value": 8
+            },
+            "text": {
+              "field": "Region"
+            },
+            "tooltip": [
+              {
+                "field": "Region"
+              }
+            ]
+          }
+        }
+      ],
+      "transform": [
+        {
+          "calculate": "datum.region",
+          "as": "Region"
+        },
+        {
+          "calculate": "datum.bicycle_count_2018",
+          "as": "Count"
+        },
+        {
+          "calculate": "datum.share_pct",
+          "as": "Share"
+        }
+      ]
+    }
+  ],
+  "center": true,
+  "padding": {
+    "left": 24,
+    "right": 24,
+    "top": 12,
+    "bottom": 16
+  }
+}

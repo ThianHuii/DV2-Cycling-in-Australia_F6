@@ -1,0 +1,410 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "font": "Source Sans 3",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "labelColor": "#33463e",
+      "titleColor": "#33463e",
+      "titlePadding": 14,
+      "gridColor": "#e2e8e3",
+      "labelLimit": 230
+    },
+    "legend": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "orient": "bottom",
+      "titleLimit": 600,
+      "labelLimit": 300
+    },
+    "text": {
+      "fontSize": 18
+    },
+    "title": {
+      "font": "Bree Serif",
+      "fontSize": 28,
+      "anchor": "start"
+    }
+  },
+  "background": "#ffffff",
+  "padding": {
+    "left": 24,
+    "right": 24,
+    "top": 12,
+    "bottom": 16
+  },
+  "spacing": 8,
+  "vconcat": [
+    {
+      "width": 620,
+      "height": 52,
+      "data": {
+        "values": [
+          {
+            "Note": "South Australia rose in rank despite a\nfalling share."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "font": "Source Sans 3",
+        "fontSize": 18,
+        "fontWeight": "normal",
+        "fontStyle": "italic",
+        "color": "#41594d",
+        "align": "left",
+        "baseline": "top",
+        "lineBreak": "\n",
+        "lineHeight": 24
+      },
+      "encoding": {
+        "x": {
+          "value": 0
+        },
+        "y": {
+          "value": 0
+        },
+        "text": {
+          "field": "Note"
+        }
+      }
+    },
+    {
+      "spacing": 22,
+      "width": 620,
+      "height": 380,
+      "data": {
+        "url": "data/state-ranks.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "Year": "number",
+            "Bicycle": "number",
+            "Employed": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "calculate": "datum.Bicycle / datum.Employed",
+          "as": "Share"
+        },
+        {
+          "window": [
+            {
+              "op": "rank",
+              "as": "Rank"
+            }
+          ],
+          "sort": [
+            {
+              "field": "Share",
+              "order": "descending"
+            }
+          ],
+          "groupby": [
+            "Year"
+          ]
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              2010,
+              2022
+            ],
+            "zero": false,
+            "nice": false
+          },
+          "axis": {
+            "title": "Census year",
+            "values": [
+              2011,
+              2016,
+              2021
+            ],
+            "format": "d",
+            "grid": false,
+            "labelAngle": 0,
+            "titlePadding": 12
+          }
+        },
+        "y": {
+          "field": "Rank",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              8.5,
+              0.5
+            ],
+            "zero": false,
+            "nice": false
+          },
+          "axis": {
+            "title": "Rank by cycling share",
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "format": "d",
+            "gridColor": "#E8ECEF",
+            "titlePadding": 15
+          }
+        },
+        "color": {
+          "field": "StateName",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Northern Territory",
+              "Australian Capital Territory",
+              "South Australia",
+              "Victoria",
+              "Queensland",
+              "Tasmania",
+              "Western Australia",
+              "New South Wales"
+            ],
+            "range": [
+              "#c35b25",
+              "#1c78a3",
+              "#53943f",
+              "#885aa3",
+              "#b09220",
+              "#b75e79",
+              "#58a3b1",
+              "#637074"
+            ]
+          },
+          "legend": null
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "line",
+            "strokeWidth": 3
+          },
+          "encoding": {
+            "detail": {
+              "field": "State"
+            },
+            "order": {
+              "field": "Year",
+              "type": "quantitative"
+            },
+            "strokeWidth": {
+              "condition": {
+                "test": "datum.State==='SA'",
+                "value": 5
+              },
+              "value": 2.5
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "size": 160,
+            "stroke": "#ffffff",
+            "strokeWidth": 2
+          },
+          "encoding": {
+            "tooltip": [
+              {
+                "field": "StateName",
+                "type": "nominal",
+                "title": "State / territory"
+              },
+              {
+                "field": "Year",
+                "type": "quantitative",
+                "title": "Census year",
+                "format": "d"
+              },
+              {
+                "field": "Rank",
+                "type": "quantitative",
+                "title": "Rank",
+                "format": "d"
+              },
+              {
+                "field": "Share",
+                "type": "quantitative",
+                "title": "Bicycle-only commuting share",
+                "format": ".2%"
+              },
+              {
+                "field": "Bicycle",
+                "type": "quantitative",
+                "title": "Bicycle-only commuters",
+                "format": ","
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "width": 560,
+      "height": 148,
+      "usermeta": {
+        "fixedLegend": true,
+        "lockColumns": true
+      },
+      "data": {
+        "values": [
+          {
+            "Label": "Northern\nTerritory",
+            "Colour": "#c35b25",
+            "X": 8,
+            "TextX": 26,
+            "Y": 18,
+            "FullName": "Northern Territory"
+          },
+          {
+            "Label": "Australian\nCapital\nTerritory",
+            "Colour": "#1c78a3",
+            "X": 148,
+            "TextX": 166,
+            "Y": 18,
+            "FullName": "Australian Capital Territory"
+          },
+          {
+            "Label": "South\nAustralia",
+            "Colour": "#53943f",
+            "X": 288,
+            "TextX": 306,
+            "Y": 18,
+            "FullName": "South Australia"
+          },
+          {
+            "Label": "Victoria",
+            "Colour": "#885aa3",
+            "X": 428,
+            "TextX": 446,
+            "Y": 18,
+            "FullName": "Victoria"
+          },
+          {
+            "Label": "Queensland",
+            "Colour": "#b09220",
+            "X": 8,
+            "TextX": 26,
+            "Y": 94,
+            "FullName": "Queensland"
+          },
+          {
+            "Label": "Tasmania",
+            "Colour": "#b75e79",
+            "X": 148,
+            "TextX": 166,
+            "Y": 94,
+            "FullName": "Tasmania"
+          },
+          {
+            "Label": "Western\nAustralia",
+            "Colour": "#58a3b1",
+            "X": 288,
+            "TextX": 306,
+            "Y": 94,
+            "FullName": "Western Australia"
+          },
+          {
+            "Label": "New South\nWales",
+            "Colour": "#637074",
+            "X": 428,
+            "TextX": 446,
+            "Y": 94,
+            "FullName": "New South Wales"
+          }
+        ]
+      },
+      "encoding": {
+        "y": {
+          "field": "Y",
+          "type": "quantitative",
+          "scale": null,
+          "axis": null
+        },
+        "tooltip": [
+          {
+            "field": "FullName",
+            "title": "State or territory"
+          }
+        ]
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "point",
+            "shape": "square",
+            "filled": true,
+            "size": 130,
+            "opacity": 1
+          },
+          "encoding": {
+            "x": {
+              "field": "X",
+              "type": "quantitative",
+              "scale": null,
+              "axis": null
+            },
+            "color": {
+              "field": "Colour",
+              "type": "nominal",
+              "scale": null,
+              "legend": null
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "font": "Source Sans 3",
+            "fontSize": 18,
+            "align": "left",
+            "baseline": "middle",
+            "color": "#33463e",
+            "lineBreak": "\n",
+            "lineHeight": 20
+          },
+          "encoding": {
+            "x": {
+              "field": "TextX",
+              "type": "quantitative",
+              "scale": null,
+              "axis": null
+            },
+            "text": {
+              "field": "Label"
+            }
+          }
+        }
+      ],
+      "title": {
+        "text": "States and territories",
+        "font": "Source Sans 3",
+        "fontSize": 18,
+        "fontWeight": "bold",
+        "anchor": "start",
+        "offset": 8
+      }
+    }
+  ],
+  "center": true
+}

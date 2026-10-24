@@ -1,0 +1,391 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "font": "Source Sans 3",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "labelColor": "#33463e",
+      "titleColor": "#33463e",
+      "titlePadding": 14,
+      "gridColor": "#e2e8e3",
+      "labelLimit": 230
+    },
+    "legend": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "orient": "bottom",
+      "titleLimit": 600,
+      "labelLimit": 300
+    },
+    "text": {
+      "fontSize": 18
+    },
+    "title": {
+      "font": "Bree Serif",
+      "fontSize": 28,
+      "anchor": "start"
+    }
+  },
+  "background": "#ffffff",
+  "spacing": 8,
+  "vconcat": [
+    {
+      "width": 620,
+      "height": 52,
+      "data": {
+        "values": [
+          {
+            "Note": "Walking’s lead is widest in the\nNorthern Territory."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "font": "Source Sans 3",
+        "fontSize": 18,
+        "fontWeight": "normal",
+        "fontStyle": "italic",
+        "color": "#41594d",
+        "align": "left",
+        "baseline": "top",
+        "lineBreak": "\n",
+        "lineHeight": 24
+      },
+      "encoding": {
+        "x": {
+          "value": 0
+        },
+        "y": {
+          "value": 0
+        },
+        "text": {
+          "field": "Note"
+        }
+      }
+    },
+    {
+      "width": 440,
+      "height": 36,
+      "usermeta": {
+        "fixedLegend": true
+      },
+      "data": {
+        "values": [
+          {
+            "Label": "Bicycle only",
+            "Colour": "#00796b",
+            "X": 12,
+            "TextX": 30,
+            "Y": 16
+          },
+          {
+            "Label": "Walked only",
+            "Colour": "#8B572A",
+            "X": 232,
+            "TextX": 250,
+            "Y": 16
+          }
+        ]
+      },
+      "encoding": {
+        "y": {
+          "field": "Y",
+          "type": "quantitative",
+          "scale": null,
+          "axis": null
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "point",
+            "shape": "square",
+            "filled": true,
+            "size": 130,
+            "opacity": 1
+          },
+          "encoding": {
+            "x": {
+              "field": "X",
+              "type": "quantitative",
+              "scale": null,
+              "axis": null
+            },
+            "color": {
+              "field": "Colour",
+              "type": "nominal",
+              "scale": null,
+              "legend": null
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "font": "Source Sans 3",
+            "fontSize": 18,
+            "align": "left",
+            "baseline": "middle",
+            "color": "#33463e"
+          },
+          "encoding": {
+            "x": {
+              "field": "TextX",
+              "type": "quantitative",
+              "scale": null,
+              "axis": null
+            },
+            "text": {
+              "field": "Label"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "data": {
+        "url": "data/active-travel.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "Bicycle": "number",
+            "Walking": "number",
+            "Employed": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "calculate": "datum.Bicycle / datum.Employed",
+          "as": "CyclingShare"
+        },
+        {
+          "calculate": "datum.Walking / datum.Employed",
+          "as": "WalkingShare"
+        },
+        {
+          "calculate": "(datum.WalkingShare - datum.CyclingShare) * 100",
+          "as": "Gap"
+        }
+      ],
+      "spacing": 18,
+      "width": 620,
+      "height": 440,
+      "encoding": {
+        "y": {
+          "field": "State",
+          "type": "nominal",
+          "sort": [
+            "Northern Territory",
+            "Tasmania",
+            "Australian Capital Territory",
+            "Queensland",
+            "New South Wales",
+            "South Australia",
+            "Victoria",
+            "Western Australia"
+          ],
+          "title": null,
+          "axis": {
+            "labelFontSize": 18,
+            "labelLimit": 0,
+            "labelPadding": 12,
+            "ticks": false,
+            "domain": false,
+            "labelExpr": "datum.label==='Australian Capital Territory' ? ['Australian','Capital','Territory'] : datum.label==='New South Wales' ? ['New South','Wales'] : datum.label==='Northern Territory' ? ['Northern','Territory'] : datum.label==='Western Australia' ? ['Western','Australia'] : datum.label==='South Australia' ? ['South','Australia'] : datum.label",
+            "labelLineHeight": 18
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "rule",
+            "strokeWidth": 4,
+            "color": "#cbd5e1"
+          },
+          "encoding": {
+            "x": {
+              "field": "CyclingShare",
+              "type": "quantitative",
+              "title": "Share of employed people",
+              "scale": {
+                "domain": [
+                  0,
+                  0.085
+                ],
+                "nice": false
+              },
+              "axis": {
+                "format": ".0%",
+                "values": [
+                  0,
+                  0.02,
+                  0.04,
+                  0.06,
+                  0.08
+                ],
+                "gridColor": "#e5e7eb",
+                "labelPadding": 7,
+                "titlePadding": 14
+              }
+            },
+            "x2": {
+              "field": "WalkingShare"
+            },
+            "tooltip": [
+              {
+                "field": "State",
+                "type": "nominal",
+                "title": "State / territory"
+              },
+              {
+                "field": "CyclingShare",
+                "type": "quantitative",
+                "title": "Bicycle only",
+                "format": ".2%"
+              },
+              {
+                "field": "WalkingShare",
+                "type": "quantitative",
+                "title": "Walked only",
+                "format": ".2%"
+              },
+              {
+                "field": "Gap",
+                "type": "quantitative",
+                "title": "Gap (percentage points)",
+                "format": ".2f"
+              }
+            ]
+          }
+        },
+        {
+          "transform": [
+            {
+              "fold": [
+                "CyclingShare",
+                "WalkingShare"
+              ],
+              "as": [
+                "Measure",
+                "Share"
+              ]
+            },
+            {
+              "calculate": "datum.Measure == 'CyclingShare' ? 'Bicycle only' : 'Walked only'",
+              "as": "Mode"
+            },
+            {
+              "calculate": "datum.Measure == 'CyclingShare' ? datum.Bicycle : datum.Walking",
+              "as": "Count"
+            }
+          ],
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "size": 180,
+            "stroke": "#ffffff",
+            "strokeWidth": 1.5
+          },
+          "encoding": {
+            "x": {
+              "field": "Share",
+              "type": "quantitative"
+            },
+            "color": {
+              "field": "Mode",
+              "type": "nominal",
+              "scale": {
+                "domain": [
+                  "Bicycle only",
+                  "Walked only"
+                ],
+                "range": [
+                  "#00796B",
+                  "#8B572A"
+                ]
+              },
+              "legend": null
+            },
+            "tooltip": [
+              {
+                "field": "State",
+                "type": "nominal",
+                "title": "State / territory"
+              },
+              {
+                "field": "Mode",
+                "type": "nominal",
+                "title": "Travel mode"
+              },
+              {
+                "field": "Share",
+                "type": "quantitative",
+                "title": "Share of employed people",
+                "format": ".2%"
+              },
+              {
+                "field": "Count",
+                "type": "quantitative",
+                "title": "Commuters",
+                "format": ","
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "dy": -15,
+            "fontSize": 18,
+            "fontWeight": "bold",
+            "color": "#00796b"
+          },
+          "encoding": {
+            "x": {
+              "field": "CyclingShare",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "CyclingShare",
+              "type": "quantitative",
+              "format": ".2%"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "dy": -15,
+            "fontSize": 18,
+            "fontWeight": "bold",
+            "color": "#8B572A"
+          },
+          "encoding": {
+            "x": {
+              "field": "WalkingShare",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "WalkingShare",
+              "type": "quantitative",
+              "format": ".2%"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "center": true,
+  "padding": {
+    "left": 24,
+    "right": 24,
+    "top": 12,
+    "bottom": 16
+  }
+}

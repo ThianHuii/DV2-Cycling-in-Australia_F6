@@ -1,0 +1,24 @@
+{
+  "input": "riderlog.csv",
+  "rows_in_extent": 3510,
+  "weighted_point_records": 391089,
+  "extent": [
+    150.9,
+    -34.02,
+    151.3,
+    -33.7
+  ],
+  "grid": [
+    160,
+    154
+  ],
+  "bandwidth_km": 1,
+  "thresholds_relative_to_peak": [
+    5,
+    20,
+    40,
+    60,
+    80
+  ],
+  "method": "Gaussian smoothing of supplied weighted cell centres, clipped to Natural Earth land. Relative density, not unique people or routes."
+}

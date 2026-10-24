@@ -1,0 +1,265 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "font": "Source Sans 3",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "labelColor": "#33463e",
+      "titleColor": "#33463e",
+      "titlePadding": 14,
+      "gridColor": "#e2e8e3",
+      "labelLimit": 230
+    },
+    "legend": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "orient": "bottom",
+      "titleLimit": 600,
+      "labelLimit": 300
+    },
+    "text": {
+      "fontSize": 18
+    },
+    "title": {
+      "font": "Bree Serif",
+      "fontSize": 28,
+      "anchor": "start"
+    }
+  },
+  "background": "#eaf3f5",
+  "padding": 12,
+  "spacing": 8,
+  "vconcat": [
+    {
+      "width": 620,
+      "height": 52,
+      "data": {
+        "values": [
+          {
+            "Note": "Recorded activity concentrates south\nof Sydney’s centre."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "font": "Source Sans 3",
+        "fontSize": 18,
+        "fontWeight": "normal",
+        "fontStyle": "italic",
+        "color": "#41594d",
+        "align": "left",
+        "baseline": "top",
+        "lineBreak": "\n",
+        "lineHeight": 24
+      },
+      "encoding": {
+        "x": {
+          "value": 0
+        },
+        "y": {
+          "value": 0
+        },
+        "text": {
+          "field": "Note"
+        }
+      }
+    },
+    {
+      "width": 620,
+      "height": 500,
+      "projection": {
+        "type": "mercator",
+        "fit": {
+          "type": "Feature",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  150.9,
+                  -34.02
+                ],
+                [
+                  150.9,
+                  -33.7
+                ],
+                [
+                  151.3,
+                  -33.7
+                ],
+                [
+                  151.3,
+                  -34.02
+                ],
+                [
+                  150.9,
+                  -34.02
+                ]
+              ]
+            ]
+          }
+        },
+        "clipExtent": [
+          [
+            0,
+            0
+          ],
+          [
+            620,
+            500
+          ]
+        ]
+      },
+      "layer": [
+        {
+          "data": {
+            "url": "data/sydney-land.geojson",
+            "format": {
+              "type": "json",
+              "property": "features"
+            }
+          },
+          "mark": {
+            "type": "geoshape",
+            "fill": "#f5f3eb",
+            "stroke": "#7d9395",
+            "strokeWidth": 1
+          }
+        },
+        {
+          "data": {
+            "url": "data/sydney-density.geojson",
+            "format": {
+              "type": "json",
+              "property": "features"
+            }
+          },
+          "mark": {
+            "type": "geoshape",
+            "stroke": "white",
+            "strokeWidth": 0.5,
+            "opacity": 0.9
+          },
+          "encoding": {
+            "color": {
+              "field": "properties.Level",
+              "type": "ordinal",
+              "scale": {
+                "domain": [
+                  5,
+                  20,
+                  40,
+                  60,
+                  80
+                ],
+                "range": [
+                  "#ece5f3",
+                  "#d0bddd",
+                  "#ac8dc3",
+                  "#825a9f",
+                  "#563374"
+                ]
+              },
+              "legend": {
+                "title": "Relative recorded-point density",
+                "labelExpr": "datum.label+'%+'",
+                "columns": 3,
+                "orient": "bottom"
+              }
+            },
+            "tooltip": [
+              {
+                "field": "properties.Level",
+                "title": "Lower contour (% of peak)"
+              }
+            ]
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "Longitude": 151.2093,
+                "Latitude": -33.8688,
+                "Label": "Sydney centre"
+              },
+              {
+                "Longitude": 151.151,
+                "Latitude": -33.889,
+                "Label": "Inner West"
+              },
+              {
+                "Longitude": 151.04,
+                "Latitude": -33.845,
+                "Label": "Olympic Park"
+              }
+            ]
+          },
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "color": "#243b35",
+            "size": 45
+          },
+          "encoding": {
+            "longitude": {
+              "field": "Longitude",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "Latitude",
+              "type": "quantitative"
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "Longitude": 151.2093,
+                "Latitude": -33.8688,
+                "Label": "Sydney centre"
+              },
+              {
+                "Longitude": 151.151,
+                "Latitude": -33.889,
+                "Label": "Inner West"
+              },
+              {
+                "Longitude": 151.04,
+                "Latitude": -33.845,
+                "Label": "Olympic Park"
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "dy": -16,
+            "fontSize": 18,
+            "color": "#263c34",
+            "stroke": "white",
+            "strokeWidth": 0.2
+          },
+          "encoding": {
+            "longitude": {
+              "field": "Longitude",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "Latitude",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "Label"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "center": true
+}

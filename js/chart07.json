@@ -1,0 +1,820 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "font": "Source Sans 3",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "labelColor": "#33463e",
+      "titleColor": "#33463e",
+      "titlePadding": 14,
+      "gridColor": "#e2e8e3",
+      "labelLimit": 230
+    },
+    "legend": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "orient": "bottom",
+      "titleLimit": 600,
+      "labelLimit": 300,
+      "columnPadding": 40,
+      "rowPadding": 12,
+      "labelOffset": 12
+    },
+    "text": {
+      "fontSize": 18
+    },
+    "title": {
+      "font": "Bree Serif",
+      "fontSize": 28,
+      "anchor": "start"
+    }
+  },
+  "background": "#eaf3f5",
+  "padding": 12,
+  "spacing": 8,
+  "vconcat": [
+    {
+      "width": 620,
+      "height": 52,
+      "data": {
+        "values": [
+          {
+            "Note": "Yarra has the highest cycling share\namong these ten areas."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "font": "Source Sans 3",
+        "fontSize": 18,
+        "fontWeight": "normal",
+        "fontStyle": "italic",
+        "color": "#41594d",
+        "align": "left",
+        "baseline": "top",
+        "lineBreak": "\n",
+        "lineHeight": 24
+      },
+      "encoding": {
+        "x": {
+          "value": 0
+        },
+        "y": {
+          "value": 0
+        },
+        "text": {
+          "field": "Note"
+        }
+      }
+    },
+    {
+      "width": 620,
+      "height": 580,
+      "projection": {
+        "type": "mercator",
+        "fit": {
+          "type": "Feature",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  141,
+                  -40
+                ],
+                [
+                  141,
+                  -24
+                ],
+                [
+                  158,
+                  -24
+                ],
+                [
+                  158,
+                  -40
+                ],
+                [
+                  141,
+                  -40
+                ]
+              ]
+            ]
+          }
+        },
+        "clipExtent": [
+          [
+            0,
+            0
+          ],
+          [
+            620,
+            580
+          ]
+        ]
+      },
+      "layer": [
+        {
+          "data": {
+            "url": "data/australian-states.geojson",
+            "format": {
+              "type": "json",
+              "property": "features"
+            }
+          },
+          "mark": {
+            "type": "geoshape",
+            "fill": "#e3e6dd",
+            "stroke": "#8b998e",
+            "strokeWidth": 1
+          }
+        },
+        {
+          "data": {
+            "url": "data/lga.csv",
+            "format": {
+              "type": "csv",
+              "parse": {
+                "Count": "number",
+                "Employed": "number",
+                "Share": "number",
+                "Longitude": "number",
+                "Latitude": "number"
+              }
+            }
+          },
+          "transform": [
+            {
+              "window": [
+                {
+                  "op": "rank",
+                  "as": "CountRank"
+                }
+              ],
+              "sort": [
+                {
+                  "field": "Count",
+                  "order": "descending"
+                }
+              ]
+            },
+            {
+              "filter": "datum.CountRank<=10"
+            },
+            {
+              "filter": "datum.State!=='Victoria'"
+            }
+          ],
+          "mark": {
+            "type": "circle",
+            "opacity": 0.85,
+            "stroke": "#825911",
+            "strokeWidth": 1.3
+          },
+          "encoding": {
+            "longitude": {
+              "field": "Longitude",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "Latitude",
+              "type": "quantitative"
+            },
+            "size": {
+              "field": "Count",
+              "type": "quantitative",
+              "scale": {
+                "domain": [
+                  0,
+                  8000
+                ],
+                "range": [
+                  0,
+                  1100
+                ]
+              },
+              "legend": null
+            },
+            "color": {
+              "field": "Share",
+              "type": "quantitative",
+              "scale": {
+                "domain": [
+                  0,
+                  0.04
+                ],
+                "range": [
+                  "#fff3c4",
+                  "#9b6405"
+                ]
+              },
+              "legend": null
+            },
+            "order": {
+              "field": "Count",
+              "type": "quantitative",
+              "sort": "descending"
+            },
+            "tooltip": [
+              {
+                "field": "LGA",
+                "title": "Local government area"
+              },
+              {
+                "field": "Count",
+                "format": ",.0f",
+                "title": "Bicycle commuters"
+              },
+              {
+                "field": "Employed",
+                "format": ",.0f",
+                "title": "Employed residents"
+              },
+              {
+                "field": "Share",
+                "format": ".2%",
+                "title": "Bicycle / employed residents"
+              }
+            ]
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "Longitude": 153.039,
+                "Latitude": -27.438,
+                "Label": "Brisbane",
+                "EndLongitude": 151,
+                "EndLatitude": -27
+              },
+              {
+                "Longitude": 149.002,
+                "Latitude": -35.489,
+                "Label": "ACT",
+                "EndLongitude": 150,
+                "EndLatitude": -36.4
+              },
+              {
+                "Longitude": 151.203,
+                "Latitude": -33.889,
+                "Label": "Sydney",
+                "EndLongitude": 153.5,
+                "EndLatitude": -33.9
+              },
+              {
+                "Longitude": 153.318,
+                "Latitude": -27.981,
+                "Label": "Gold Coast",
+                "EndLongitude": 155,
+                "EndLatitude": -29
+              },
+              {
+                "Longitude": 152.898,
+                "Latitude": -26.696,
+                "Label": "Sunshine Coast",
+                "EndLongitude": 154.8,
+                "EndLatitude": -25.8
+              },
+              {
+                "Longitude": 144.98,
+                "Latitude": -37.8,
+                "Label": "Melbourne: detail below",
+                "EndLongitude": 148,
+                "EndLatitude": -38.4
+              }
+            ]
+          },
+          "mark": {
+            "type": "rule",
+            "color": "#6c7165"
+          },
+          "encoding": {
+            "longitude": {
+              "field": "Longitude",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "Latitude",
+              "type": "quantitative"
+            },
+            "longitude2": {
+              "field": "EndLongitude"
+            },
+            "latitude2": {
+              "field": "EndLatitude"
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "Longitude": 153.039,
+                "Latitude": -27.438,
+                "Label": "Brisbane",
+                "EndLongitude": 151,
+                "EndLatitude": -27
+              },
+              {
+                "Longitude": 149.002,
+                "Latitude": -35.489,
+                "Label": "ACT",
+                "EndLongitude": 150,
+                "EndLatitude": -36.4
+              },
+              {
+                "Longitude": 151.203,
+                "Latitude": -33.889,
+                "Label": "Sydney",
+                "EndLongitude": 153.5,
+                "EndLatitude": -33.9
+              },
+              {
+                "Longitude": 153.318,
+                "Latitude": -27.981,
+                "Label": "Gold Coast",
+                "EndLongitude": 155,
+                "EndLatitude": -29
+              },
+              {
+                "Longitude": 152.898,
+                "Latitude": -26.696,
+                "Label": "Sunshine Coast",
+                "EndLongitude": 154.8,
+                "EndLatitude": -25.8
+              },
+              {
+                "Longitude": 144.98,
+                "Latitude": -37.8,
+                "Label": "Melbourne: detail below",
+                "EndLongitude": 148,
+                "EndLatitude": -38.4
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "fontSize": 18,
+            "align": "center",
+            "dy": -10,
+            "color": "#324238"
+          },
+          "encoding": {
+            "longitude": {
+              "field": "EndLongitude",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "EndLatitude",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "Label"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "width": 480,
+      "height": 78,
+      "usermeta": {
+        "fixedLegend": true
+      },
+      "title": {
+        "text": "Bicycle commuters",
+        "font": "Source Sans 3",
+        "fontSize": 18,
+        "fontWeight": "bold",
+        "anchor": "start"
+      },
+      "data": {
+        "values": [
+          {
+            "Count": 1000,
+            "X": 70
+          },
+          {
+            "Count": 4000,
+            "X": 230
+          },
+          {
+            "Count": 8000,
+            "X": 390
+          }
+        ]
+      },
+      "encoding": {
+        "x": {
+          "field": "X",
+          "type": "quantitative",
+          "scale": null,
+          "axis": null
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "circle",
+            "color": "#a58a4d",
+            "opacity": 0.85,
+            "stroke": "#825911"
+          },
+          "encoding": {
+            "y": {
+              "value": 24
+            },
+            "size": {
+              "field": "Count",
+              "type": "quantitative",
+              "scale": {
+                "domain": [
+                  0,
+                  8000
+                ],
+                "range": [
+                  0,
+                  1100
+                ]
+              },
+              "legend": null
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "fontSize": 18,
+            "color": "#33463e"
+          },
+          "encoding": {
+            "y": {
+              "value": 62
+            },
+            "text": {
+              "field": "Count",
+              "type": "quantitative",
+              "format": ",.0f"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "width": 480,
+      "height": 52,
+      "usermeta": {
+        "fixedLegend": true
+      },
+      "title": {
+        "text": "Local cycling share",
+        "font": "Source Sans 3",
+        "fontSize": 18,
+        "fontWeight": "bold",
+        "anchor": "start"
+      },
+      "layer": [
+        {
+          "data": {
+            "values": [
+              {
+                "X": 0.0,
+                "X2": 9.6,
+                "Share": 0.0
+              },
+              {
+                "X": 9.6,
+                "X2": 19.2,
+                "Share": 0.0008163265306122448
+              },
+              {
+                "X": 19.2,
+                "X2": 28.8,
+                "Share": 0.0016326530612244896
+              },
+              {
+                "X": 28.8,
+                "X2": 38.4,
+                "Share": 0.0024489795918367346
+              },
+              {
+                "X": 38.4,
+                "X2": 48.0,
+                "Share": 0.0032653061224489793
+              },
+              {
+                "X": 48.0,
+                "X2": 57.6,
+                "Share": 0.004081632653061225
+              },
+              {
+                "X": 57.6,
+                "X2": 67.2,
+                "Share": 0.004897959183673469
+              },
+              {
+                "X": 67.2,
+                "X2": 76.8,
+                "Share": 0.005714285714285714
+              },
+              {
+                "X": 76.8,
+                "X2": 86.4,
+                "Share": 0.0065306122448979586
+              },
+              {
+                "X": 86.4,
+                "X2": 96.0,
+                "Share": 0.007346938775510205
+              },
+              {
+                "X": 96.0,
+                "X2": 105.6,
+                "Share": 0.00816326530612245
+              },
+              {
+                "X": 105.6,
+                "X2": 115.2,
+                "Share": 0.008979591836734694
+              },
+              {
+                "X": 115.2,
+                "X2": 124.8,
+                "Share": 0.009795918367346938
+              },
+              {
+                "X": 124.8,
+                "X2": 134.4,
+                "Share": 0.010612244897959184
+              },
+              {
+                "X": 134.4,
+                "X2": 144.0,
+                "Share": 0.011428571428571429
+              },
+              {
+                "X": 144.0,
+                "X2": 153.6,
+                "Share": 0.012244897959183675
+              },
+              {
+                "X": 153.6,
+                "X2": 163.2,
+                "Share": 0.013061224489795917
+              },
+              {
+                "X": 163.2,
+                "X2": 172.8,
+                "Share": 0.013877551020408163
+              },
+              {
+                "X": 172.8,
+                "X2": 182.4,
+                "Share": 0.01469387755102041
+              },
+              {
+                "X": 182.4,
+                "X2": 192.0,
+                "Share": 0.015510204081632653
+              },
+              {
+                "X": 192.0,
+                "X2": 201.6,
+                "Share": 0.0163265306122449
+              },
+              {
+                "X": 201.6,
+                "X2": 211.2,
+                "Share": 0.017142857142857144
+              },
+              {
+                "X": 211.2,
+                "X2": 220.8,
+                "Share": 0.017959183673469388
+              },
+              {
+                "X": 220.8,
+                "X2": 230.4,
+                "Share": 0.018775510204081632
+              },
+              {
+                "X": 230.4,
+                "X2": 240.0,
+                "Share": 0.019591836734693877
+              },
+              {
+                "X": 240.0,
+                "X2": 249.6,
+                "Share": 0.020408163265306124
+              },
+              {
+                "X": 249.6,
+                "X2": 259.2,
+                "Share": 0.02122448979591837
+              },
+              {
+                "X": 259.2,
+                "X2": 268.8,
+                "Share": 0.02204081632653061
+              },
+              {
+                "X": 268.8,
+                "X2": 278.4,
+                "Share": 0.022857142857142857
+              },
+              {
+                "X": 278.4,
+                "X2": 288.0,
+                "Share": 0.0236734693877551
+              },
+              {
+                "X": 288.0,
+                "X2": 297.6,
+                "Share": 0.02448979591836735
+              },
+              {
+                "X": 297.6,
+                "X2": 307.2,
+                "Share": 0.025306122448979593
+              },
+              {
+                "X": 307.2,
+                "X2": 316.8,
+                "Share": 0.026122448979591834
+              },
+              {
+                "X": 316.8,
+                "X2": 326.4,
+                "Share": 0.026938775510204082
+              },
+              {
+                "X": 326.4,
+                "X2": 336.0,
+                "Share": 0.027755102040816326
+              },
+              {
+                "X": 336.0,
+                "X2": 345.6,
+                "Share": 0.028571428571428574
+              },
+              {
+                "X": 345.6,
+                "X2": 355.2,
+                "Share": 0.02938775510204082
+              },
+              {
+                "X": 355.2,
+                "X2": 364.8,
+                "Share": 0.03020408163265306
+              },
+              {
+                "X": 364.8,
+                "X2": 374.4,
+                "Share": 0.031020408163265307
+              },
+              {
+                "X": 374.4,
+                "X2": 384.0,
+                "Share": 0.03183673469387755
+              },
+              {
+                "X": 384.0,
+                "X2": 393.6,
+                "Share": 0.0326530612244898
+              },
+              {
+                "X": 393.6,
+                "X2": 403.2,
+                "Share": 0.03346938775510205
+              },
+              {
+                "X": 403.2,
+                "X2": 412.8,
+                "Share": 0.03428571428571429
+              },
+              {
+                "X": 412.8,
+                "X2": 422.4,
+                "Share": 0.03510204081632653
+              },
+              {
+                "X": 422.4,
+                "X2": 432.0,
+                "Share": 0.035918367346938776
+              },
+              {
+                "X": 432.0,
+                "X2": 441.6,
+                "Share": 0.036734693877551024
+              },
+              {
+                "X": 441.6,
+                "X2": 451.2,
+                "Share": 0.037551020408163265
+              },
+              {
+                "X": 451.2,
+                "X2": 460.8,
+                "Share": 0.03836734693877551
+              },
+              {
+                "X": 460.8,
+                "X2": 470.4,
+                "Share": 0.03918367346938775
+              },
+              {
+                "X": 470.4,
+                "X2": 480.0,
+                "Share": 0.04
+              }
+            ]
+          },
+          "mark": "rect",
+          "encoding": {
+            "x": {
+              "field": "X",
+              "type": "quantitative",
+              "scale": null,
+              "axis": null
+            },
+            "x2": {
+              "field": "X2"
+            },
+            "y": {
+              "value": 0
+            },
+            "y2": {
+              "value": 16
+            },
+            "color": {
+              "field": "Share",
+              "type": "quantitative",
+              "scale": {
+                "domain": [
+                  0,
+                  0.04
+                ],
+                "range": [
+                  "#fff3c4",
+                  "#9b6405"
+                ]
+              },
+              "legend": null
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "X": 0,
+                "Label": "0%"
+              },
+              {
+                "X": 120,
+                "Label": "1%"
+              },
+              {
+                "X": 240,
+                "Label": "2%"
+              },
+              {
+                "X": 360,
+                "Label": "3%"
+              },
+              {
+                "X": 480,
+                "Label": "4%"
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "fontSize": 18,
+            "color": "#33463e"
+          },
+          "encoding": {
+            "x": {
+              "field": "X",
+              "type": "quantitative",
+              "scale": null,
+              "axis": null
+            },
+            "y": {
+              "value": 40
+            },
+            "text": {
+              "field": "Label"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "center": true
+}

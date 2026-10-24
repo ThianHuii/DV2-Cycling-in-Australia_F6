@@ -1,0 +1,37 @@
+﻿station,region,month_date,month,month_order,count,station_average,seasonal_index,difference_from_average_pct
+Sydney Harbour Bridge,Sydney City,2018-10-01,Oct,1,1744,1742.17,100.1,0.1
+Sydney Harbour Bridge,Sydney City,2018-11-01,Nov,2,1974,1742.17,113.3,13.3
+Sydney Harbour Bridge,Sydney City,2018-12-01,Dec,3,1549,1742.17,88.9,-11.1
+Sydney Harbour Bridge,Sydney City,2019-01-01,Jan,4,1807,1742.17,103.7,3.7
+Sydney Harbour Bridge,Sydney City,2019-02-01,Feb,5,2095,1742.17,120.3,20.3
+Sydney Harbour Bridge,Sydney City,2019-03-01,Mar,6,1880,1742.17,107.9,7.9
+Sydney Harbour Bridge,Sydney City,2019-04-01,Apr,7,1780,1742.17,102.2,2.2
+Sydney Harbour Bridge,Sydney City,2019-05-01,May,8,1958,1742.17,112.4,12.4
+Sydney Harbour Bridge,Sydney City,2019-06-01,Jun,9,1348,1742.17,77.4,-22.6
+Sydney Harbour Bridge,Sydney City,2019-07-01,Jul,10,1618,1742.17,92.9,-7.1
+Sydney Harbour Bridge,Sydney City,2019-08-01,Aug,11,1572,1742.17,90.2,-9.8
+Sydney Harbour Bridge,Sydney City,2019-09-01,Sep,12,1581,1742.17,90.7,-9.3
+Anzac Bridge,Sydney City,2018-10-01,Oct,1,1249,1306.67,95.6,-4.4
+Anzac Bridge,Sydney City,2018-11-01,Nov,2,1433,1306.67,109.7,9.7
+Anzac Bridge,Sydney City,2018-12-01,Dec,3,1122,1306.67,85.9,-14.1
+Anzac Bridge,Sydney City,2019-01-01,Jan,4,1299,1306.67,99.4,-0.6
+Anzac Bridge,Sydney City,2019-02-01,Feb,5,1571,1306.67,120.2,20.2
+Anzac Bridge,Sydney City,2019-03-01,Mar,6,1460,1306.67,111.7,11.7
+Anzac Bridge,Sydney City,2019-04-01,Apr,7,1341,1306.67,102.6,2.6
+Anzac Bridge,Sydney City,2019-05-01,May,8,1447,1306.67,110.7,10.7
+Anzac Bridge,Sydney City,2019-06-01,Jun,9,1083,1306.67,82.9,-17.1
+Anzac Bridge,Sydney City,2019-07-01,Jul,10,1239,1306.67,94.8,-5.2
+Anzac Bridge,Sydney City,2019-08-01,Aug,11,1219,1306.67,93.3,-6.7
+Anzac Bridge,Sydney City,2019-09-01,Sep,12,1217,1306.67,93.1,-6.9
+North Ryde to Sydney Olympic Park,Metro Sydney Inner North,2018-10-01,Oct,1,379,379.0,100.0,0.0
+North Ryde to Sydney Olympic Park,Metro Sydney Inner North,2018-11-01,Nov,2,376,379.0,99.2,-0.8
+North Ryde to Sydney Olympic Park,Metro Sydney Inner North,2018-12-01,Dec,3,377,379.0,99.5,-0.5
+North Ryde to Sydney Olympic Park,Metro Sydney Inner North,2019-01-01,Jan,4,418,379.0,110.3,10.3
+North Ryde to Sydney Olympic Park,Metro Sydney Inner North,2019-02-01,Feb,5,411,379.0,108.4,8.4
+North Ryde to Sydney Olympic Park,Metro Sydney Inner North,2019-03-01,Mar,6,401,379.0,105.8,5.8
+North Ryde to Sydney Olympic Park,Metro Sydney Inner North,2019-04-01,Apr,7,450,379.0,118.7,18.7
+North Ryde to Sydney Olympic Park,Metro Sydney Inner North,2019-05-01,May,8,396,379.0,104.5,4.5
+North Ryde to Sydney Olympic Park,Metro Sydney Inner North,2019-06-01,Jun,9,319,379.0,84.2,-15.8
+North Ryde to Sydney Olympic Park,Metro Sydney Inner North,2019-07-01,Jul,10,361,379.0,95.3,-4.7
+North Ryde to Sydney Olympic Park,Metro Sydney Inner North,2019-08-01,Aug,11,329,379.0,86.8,-13.2
+North Ryde to Sydney Olympic Park,Metro Sydney Inner North,2019-09-01,Sep,12,331,379.0,87.3,-12.7

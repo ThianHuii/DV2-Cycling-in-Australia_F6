@@ -1,0 +1,455 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "font": "Source Sans 3",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "labelColor": "#33463e",
+      "titleColor": "#33463e",
+      "titlePadding": 14,
+      "gridColor": "#e2e8e3",
+      "labelLimit": 230
+    },
+    "legend": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "orient": "bottom",
+      "titleLimit": 600,
+      "labelLimit": 300
+    },
+    "text": {
+      "fontSize": 18
+    },
+    "title": {
+      "font": "Bree Serif",
+      "fontSize": 28,
+      "anchor": "start"
+    }
+  },
+  "background": "#eaf3f5",
+  "padding": 20,
+  "spacing": 12,
+  "vconcat": [
+    {
+      "width": 620,
+      "height": 480,
+      "projection": {
+        "type": "conicEqualArea",
+        "rotate": [
+          -132,
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -27
+        ],
+        "parallels": [
+          -18,
+          -36
+        ]
+      },
+      "layer": [
+        {
+          "data": {
+            "url": "data/australian-states.geojson",
+            "format": {
+              "type": "json",
+              "property": "features"
+            }
+          },
+          "transform": [
+            {
+              "calculate": "datum.properties.STATE_NAME || datum.properties.name",
+              "as": "State"
+            },
+            {
+              "lookup": "State",
+              "from": {
+                "data": {
+                  "url": "data/state-share.csv",
+                  "format": {
+                    "type": "csv",
+                    "parse": {
+                      "Bicycle": "number",
+                      "Total_employed": "number"
+                    }
+                  }
+                },
+                "key": "State",
+                "fields": [
+                  "Bicycle",
+                  "Total_employed"
+                ]
+              }
+            },
+            {
+              "calculate": "datum.Bicycle / datum.Total_employed",
+              "as": "Share"
+            },
+            {
+              "calculate": "datum.Share<0.005 ? '<0.5%' : datum.Share<0.007 ? '0.5–<0.7%' : datum.Share<0.008 ? '0.7–<0.8%' : datum.Share<0.012 ? '0.8–<1.2%' : '≥1.2%'",
+              "as": "ShareClass"
+            }
+          ],
+          "mark": {
+            "type": "geoshape",
+            "stroke": "#ffffff",
+            "strokeWidth": 1.5
+          },
+          "encoding": {
+            "color": {
+              "field": "ShareClass",
+              "type": "ordinal",
+              "scale": {
+                "domain": [
+                  "<0.5%",
+                  "0.5–<0.7%",
+                  "0.7–<0.8%",
+                  "0.8–<1.2%",
+                  "≥1.2%"
+                ],
+                "range": [
+                  "#eff3ff",
+                  "#bdd7e7",
+                  "#6baed6",
+                  "#3182bd",
+                  "#08519c"
+                ]
+              },
+              "legend": null
+            },
+            "tooltip": [
+              {
+                "field": "State",
+                "type": "nominal",
+                "title": "State / territory"
+              },
+              {
+                "field": "Share",
+                "type": "quantitative",
+                "title": "Bicycle-only commuting share",
+                "format": ".2%"
+              },
+              {
+                "field": "Bicycle",
+                "type": "quantitative",
+                "title": "Bicycle-only commuters",
+                "format": ","
+              },
+              {
+                "field": "Total_employed",
+                "type": "quantitative",
+                "title": "Employed people aged 15+",
+                "format": ","
+              }
+            ]
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "Label": "Western\nAustralia",
+                "Longitude": 122,
+                "Latitude": -26
+              },
+              {
+                "Label": "Northern\nTerritory",
+                "Longitude": 133.4,
+                "Latitude": -20
+              },
+              {
+                "Label": "South\nAustralia",
+                "Longitude": 135.5,
+                "Latitude": -30
+              },
+              {
+                "Label": "Queensland",
+                "Longitude": 145,
+                "Latitude": -23
+              },
+              {
+                "Label": "New South\nWales",
+                "Longitude": 147,
+                "Latitude": -32
+              },
+              {
+                "Label": "Victoria",
+                "Longitude": 144.5,
+                "Latitude": -36.8
+              },
+              {
+                "Label": "Tasmania",
+                "Longitude": 146.7,
+                "Latitude": -42
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "fontSize": 18,
+            "fontWeight": "bold",
+            "lineBreak": "\n",
+            "lineHeight": 22
+          },
+          "encoding": {
+            "longitude": {
+              "field": "Longitude",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "Latitude",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "Label"
+            },
+            "color": {
+              "condition": {
+                "test": "datum.Label==='Northern\\nTerritory'",
+                "value": "#ffffff"
+              },
+              "value": "#243746",
+              "legend": null
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "Label": "Australian Capital\nTerritory (ACT): 1.93%"
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "fontSize": 18,
+            "fontWeight": "bold",
+            "color": "#243746",
+            "lineBreak": "\n",
+            "lineHeight": 22,
+            "dx": 0,
+            "baseline": "top"
+          },
+          "encoding": {
+            "x": {
+              "value": 12
+            },
+            "y": {
+              "value": 12
+            },
+            "text": {
+              "field": "Label"
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "Note": "Northern Territory’s share is\nnearly five times New South Wales’s."
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "baseline": "top",
+            "fontSize": 18,
+            "fontWeight": "normal",
+            "color": "#41594d",
+            "lineBreak": "\n",
+            "lineHeight": 22,
+            "fontStyle": "italic"
+          },
+          "encoding": {
+            "x": {
+              "value": 12
+            },
+            "y": {
+              "value": 425
+            },
+            "text": {
+              "field": "Note"
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "Longitude": 149.1,
+                "Latitude": -35.4
+              }
+            ]
+          },
+          "mark": {
+            "type": "circle",
+            "size": 55,
+            "color": "#243746",
+            "stroke": "white",
+            "strokeWidth": 1
+          },
+          "encoding": {
+            "longitude": {
+              "field": "Longitude",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "Latitude",
+              "type": "quantitative"
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "Longitude": 149.1,
+                "Latitude": -35.4,
+                "Label": "ACT"
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dx": 12,
+            "dy": -10,
+            "fontSize": 18,
+            "color": "#243746"
+          },
+          "encoding": {
+            "longitude": {
+              "field": "Longitude",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "Latitude",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "Label"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "width": 620,
+      "height": 96,
+      "usermeta": {
+        "fixedLegend": true
+      },
+      "data": {
+        "values": [
+          {
+            "Label": "<0.5%",
+            "Colour": "#eff3ff",
+            "X": 12,
+            "TextX": 30,
+            "Y": 16
+          },
+          {
+            "Label": "0.5–<0.7%",
+            "Colour": "#bdd7e7",
+            "X": 312,
+            "TextX": 330,
+            "Y": 16
+          },
+          {
+            "Label": "0.7–<0.8%",
+            "Colour": "#6baed6",
+            "X": 12,
+            "TextX": 30,
+            "Y": 46
+          },
+          {
+            "Label": "0.8–<1.2%",
+            "Colour": "#3182bd",
+            "X": 312,
+            "TextX": 330,
+            "Y": 46
+          },
+          {
+            "Label": "≥1.2%",
+            "Colour": "#08519c",
+            "X": 12,
+            "TextX": 30,
+            "Y": 76
+          }
+        ]
+      },
+      "encoding": {
+        "y": {
+          "field": "Y",
+          "type": "quantitative",
+          "scale": null,
+          "axis": null
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "point",
+            "shape": "square",
+            "filled": true,
+            "size": 130,
+            "opacity": 1
+          },
+          "encoding": {
+            "x": {
+              "field": "X",
+              "type": "quantitative",
+              "scale": null,
+              "axis": null
+            },
+            "color": {
+              "field": "Colour",
+              "type": "nominal",
+              "scale": null,
+              "legend": null
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "font": "Source Sans 3",
+            "fontSize": 18,
+            "align": "left",
+            "baseline": "middle",
+            "color": "#33463e"
+          },
+          "encoding": {
+            "x": {
+              "field": "TextX",
+              "type": "quantitative",
+              "scale": null,
+              "axis": null
+            },
+            "text": {
+              "field": "Label"
+            }
+          }
+        }
+      ],
+      "title": {
+        "text": "Bicycle share of employed people",
+        "font": "Source Sans 3",
+        "fontSize": 18,
+        "fontWeight": "bold",
+        "anchor": "start",
+        "offset": 8
+      }
+    }
+  ],
+  "center": true
+}

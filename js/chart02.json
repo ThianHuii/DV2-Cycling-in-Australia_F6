@@ -1,0 +1,266 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "font": "Source Sans 3",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "labelColor": "#33463e",
+      "titleColor": "#33463e",
+      "titlePadding": 14,
+      "gridColor": "#e2e8e3",
+      "labelLimit": 230
+    },
+    "legend": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "orient": "bottom",
+      "titleLimit": 600,
+      "labelLimit": 300
+    },
+    "text": {
+      "fontSize": 18
+    },
+    "title": {
+      "font": "Bree Serif",
+      "fontSize": 28,
+      "anchor": "start"
+    }
+  },
+  "background": "white",
+  "padding": {
+    "left": 12,
+    "right": 12,
+    "top": 6,
+    "bottom": 4
+  },
+  "spacing": 8,
+  "vconcat": [
+    {
+      "width": 620,
+      "height": 48,
+      "data": {
+        "values": [
+          {
+            "Note": "Cycling\u2019s share fell by 0.35\npercentage points."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "font": "Source Sans 3",
+        "fontSize": 18,
+        "fontWeight": "normal",
+        "fontStyle": "italic",
+        "color": "#41594d",
+        "align": "left",
+        "baseline": "top",
+        "lineBreak": "\n",
+        "lineHeight": 24
+      },
+      "encoding": {
+        "x": {
+          "value": 0
+        },
+        "y": {
+          "value": 0
+        },
+        "text": {
+          "field": "Note"
+        }
+      }
+    },
+    {
+      "width": 620,
+      "height": 125,
+      "data": {
+        "url": "data/journey-to-work.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "Count2016": "number",
+            "Count2021": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.Mode==='Bicycle' || datum.Mode==='Total'"
+        },
+        {
+          "fold": [
+            "Count2016",
+            "Count2021"
+          ],
+          "as": [
+            "Series",
+            "Count"
+          ]
+        },
+        {
+          "pivot": "Mode",
+          "value": "Count",
+          "groupby": [
+            "Series"
+          ]
+        },
+        {
+          "calculate": "datum.Series==='Count2016' ? '2016' : '2021'",
+          "as": "Year"
+        },
+        {
+          "calculate": "datum.Bicycle/datum.Total",
+          "as": "Share"
+        },
+        {
+          "pivot": "Year",
+          "value": "Share"
+        },
+        {
+          "calculate": "datum['2016']",
+          "as": "Previous"
+        },
+        {
+          "calculate": "datum['2021']",
+          "as": "Current"
+        },
+        {
+          "calculate": "'2016: '+format(datum.Previous,'.2%')",
+          "as": "PreviousLabel"
+        },
+        {
+          "calculate": "'2021: '+format(datum.Current,'.2%')",
+          "as": "CurrentLabel"
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "Current",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              0.012
+            ]
+          },
+          "axis": {
+            "title": "Bicycle commuters / all employed people",
+            "format": ".1%",
+            "values": [
+              0,
+              0.004,
+              0.008,
+              0.012
+            ],
+            "grid": false
+          }
+        },
+        "tooltip": [
+          {
+            "field": "Previous",
+            "title": "2016 bicycle share",
+            "format": ".2%"
+          },
+          {
+            "field": "Current",
+            "title": "2021 bicycle share",
+            "format": ".2%"
+          }
+        ]
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "size": 52,
+            "color": "#dde4df"
+          },
+          "encoding": {
+            "x": {
+              "field": "Previous",
+              "type": "quantitative"
+            },
+            "x2": {
+              "datum": 0
+            },
+            "y": {
+              "value": 55
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "bar",
+            "size": 26,
+            "color": "#00796b"
+          },
+          "encoding": {
+            "x2": {
+              "datum": 0
+            },
+            "y": {
+              "value": 55
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "rule",
+            "color": "#33463e",
+            "strokeWidth": 3
+          },
+          "encoding": {
+            "x": {
+              "field": "Previous",
+              "type": "quantitative"
+            },
+            "y": {
+              "value": 22
+            },
+            "y2": {
+              "value": 88
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "fontSize": 20,
+            "color": "#33463e"
+          },
+          "encoding": {
+            "x": {
+              "field": "Previous",
+              "type": "quantitative"
+            },
+            "y": {
+              "value": 9
+            },
+            "text": {
+              "field": "PreviousLabel"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "fontSize": 20,
+            "color": "#00796b"
+          },
+          "encoding": {
+            "y": {
+              "value": 99
+            },
+            "text": {
+              "field": "CurrentLabel"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "center": true
+}

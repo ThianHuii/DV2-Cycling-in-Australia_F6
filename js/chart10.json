@@ -1,0 +1,261 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "font": "Source Sans 3",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "labelColor": "#33463e",
+      "titleColor": "#33463e",
+      "titlePadding": 14,
+      "gridColor": "#e2e8e3",
+      "labelLimit": 230
+    },
+    "legend": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "orient": "bottom",
+      "titleLimit": 600,
+      "labelLimit": 300
+    },
+    "text": {
+      "fontSize": 18
+    },
+    "title": {
+      "font": "Bree Serif",
+      "fontSize": 28,
+      "anchor": "start"
+    }
+  },
+  "background": "white",
+  "padding": 12,
+  "spacing": 8,
+  "vconcat": [
+    {
+      "width": 620,
+      "height": 52,
+      "data": {
+        "values": [
+          {
+            "Note": "June was quietest at all three\ncounting locations."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "font": "Source Sans 3",
+        "fontSize": 18,
+        "fontWeight": "normal",
+        "fontStyle": "italic",
+        "color": "#41594d",
+        "align": "left",
+        "baseline": "top",
+        "lineBreak": "\n",
+        "lineHeight": 24
+      },
+      "encoding": {
+        "x": {
+          "value": 0
+        },
+        "y": {
+          "value": 0
+        },
+        "text": {
+          "field": "Note"
+        }
+      }
+    },
+    {
+      "width": 900,
+      "height": 210,
+      "data": {
+        "url": "data/monthly-counts.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "seasonal_index": "number",
+            "count": "number"
+          }
+        }
+      },
+      "encoding": {
+        "x": {
+          "field": "month",
+          "type": "ordinal",
+          "sort": [
+            "Oct",
+            "Nov",
+            "Dec",
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep"
+          ],
+          "title": null,
+          "axis": {
+            "labelAngle": 0,
+            "orient": "top",
+            "labelPadding": 10
+          },
+          "scale": {
+            "rangeMin": 230,
+            "rangeMax": 900
+          }
+        },
+        "y": {
+          "field": "station",
+          "type": "nominal",
+          "sort": [
+            "Sydney Harbour Bridge",
+            "Anzac Bridge",
+            "North Ryde to Sydney Olympic Park"
+          ],
+          "title": null,
+          "axis": null,
+          "scale": {
+            "type": "band",
+            "paddingInner": 0,
+            "paddingOuter": 0
+          }
+        },
+        "tooltip": [
+          {
+            "field": "station",
+            "title": "Counting location"
+          },
+          {
+            "field": "month_date",
+            "title": "Month"
+          },
+          {
+            "field": "seasonal_index",
+            "format": ".1f",
+            "title": "Index: 100 = location average"
+          },
+          {
+            "field": "count",
+            "format": ",.0f",
+            "title": "Supplied monthly count"
+          }
+        ]
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "rect",
+            "stroke": "white",
+            "strokeWidth": 2
+          },
+          "encoding": {
+            "color": {
+              "field": "seasonal_index",
+              "type": "quantitative",
+              "scale": {
+                "domain": [
+                  65,
+                  100,
+                  135
+                ],
+                "range": [
+                  "#8b3d2c",
+                  "#faf4e8",
+                  "#3d7f8a"
+                ]
+              },
+              "legend": {
+                "title": "Index: 100 = each location’s average",
+                "gradientLength": 320,
+                "values": [
+                  70,
+                  85,
+                  100,
+                  115,
+                  130
+                ]
+              }
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "fontSize": 18
+          },
+          "encoding": {
+            "text": {
+              "field": "seasonal_index",
+              "type": "quantitative",
+              "format": ".0f"
+            },
+            "color": {
+              "condition": {
+                "test": "datum.seasonal_index<80 || datum.seasonal_index>125",
+                "value": "white"
+              },
+              "value": "#213a32"
+            }
+          }
+        },
+        {
+          "transform": [
+            {
+              "filter": "datum.month==='Jun'"
+            }
+          ],
+          "mark": {
+            "type": "rect",
+            "fillOpacity": 0,
+            "stroke": "#722b23",
+            "strokeWidth": 3
+          }
+        },
+        {
+          "transform": [
+            {
+              "aggregate": [],
+              "groupby": [
+                "station"
+              ]
+            },
+            {
+              "calculate": "datum.station==='Sydney Harbour Bridge' ? 'Sydney Harbour\\nBridge' : datum.station==='North Ryde to Sydney Olympic Park' ? 'North Ryde to Sydney\\nOlympic Park' : datum.station",
+              "as": "StationLabel"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "baseline": "middle",
+            "fontSize": 18,
+            "lineBreak": "\n",
+            "lineHeight": 22,
+            "color": "#33463e"
+          },
+          "encoding": {
+            "x": {
+              "value": 8
+            },
+            "text": {
+              "field": "StationLabel"
+            },
+            "tooltip": [
+              {
+                "field": "station",
+                "title": "Counting location"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "center": true
+}

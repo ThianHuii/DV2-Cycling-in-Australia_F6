@@ -1,0 +1,379 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "background": "#eaf3f5",
+  "padding": 12,
+  "config": {
+    "font": "Source Sans 3",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "labelColor": "#33463e",
+      "titleColor": "#33463e",
+      "titlePadding": 14,
+      "gridColor": "#e2e8e3",
+      "labelLimit": 230
+    },
+    "legend": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "orient": "bottom",
+      "titleLimit": 600,
+      "labelLimit": 300
+    },
+    "text": {
+      "fontSize": 18
+    },
+    "title": {
+      "font": "Bree Serif",
+      "fontSize": 28,
+      "anchor": "start"
+    }
+  },
+  "width": 620,
+  "height": 720,
+  "projection": {
+    "type": "mercator",
+    "fit": {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              144.77,
+              -37.94
+            ],
+            [
+              144.77,
+              -37.63
+            ],
+            [
+              145.18,
+              -37.63
+            ],
+            [
+              145.18,
+              -37.94
+            ],
+            [
+              144.77,
+              -37.94
+            ]
+          ]
+        ]
+      }
+    },
+    "clipExtent": [
+      [
+        0,
+        0
+      ],
+      [
+        620,
+        720
+      ]
+    ]
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "data/australian-states.geojson",
+        "format": {
+          "type": "json",
+          "property": "features"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#e3e6dd",
+        "stroke": "#8b998e",
+        "strokeWidth": 1
+      }
+    },
+    {
+      "data": {
+        "url": "data/lga.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "Count": "number",
+            "Employed": "number",
+            "Share": "number",
+            "Longitude": "number",
+            "Latitude": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "window": [
+            {
+              "op": "rank",
+              "as": "CountRank"
+            }
+          ],
+          "sort": [
+            {
+              "field": "Count",
+              "order": "descending"
+            }
+          ]
+        },
+        {
+          "filter": "datum.CountRank<=10"
+        },
+        {
+          "filter": "datum.State==='Victoria'"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "opacity": 0.85,
+        "stroke": "#825911",
+        "strokeWidth": 1.3
+      },
+      "encoding": {
+        "longitude": {
+          "field": "Longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "Latitude",
+          "type": "quantitative"
+        },
+        "size": {
+          "field": "Count",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              8000
+            ],
+            "range": [
+              0,
+              1600
+            ]
+          },
+          "legend": null
+        },
+        "color": {
+          "field": "Share",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              0.04
+            ],
+            "range": [
+              "#fff3c4",
+              "#9b6405"
+            ]
+          },
+          "legend": null
+        },
+        "order": {
+          "field": "Count",
+          "type": "quantitative",
+          "sort": "descending"
+        },
+        "tooltip": [
+          {
+            "field": "LGA",
+            "title": "Local government area"
+          },
+          {
+            "field": "Count",
+            "format": ",.0f",
+            "title": "Bicycle commuters"
+          },
+          {
+            "field": "Employed",
+            "format": ",.0f",
+            "title": "Employed residents"
+          },
+          {
+            "field": "Share",
+            "format": ".2%",
+            "title": "Bicycle / employed residents"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "LGA": "Moreland",
+            "State": "Victoria",
+            "Count": 2620,
+            "Employed": 93061,
+            "Share": 0.02815357668625955,
+            "Longitude": 144.9488880362751,
+            "Latitude": -37.729918568433284,
+            "Label": "Moreland",
+            "EndLongitude": 144.87,
+            "EndLatitude": -37.68
+          },
+          {
+            "LGA": "Yarra",
+            "State": "Victoria",
+            "Count": 2260,
+            "Employed": 57177,
+            "Share": 0.039526382986165766,
+            "Longitude": 144.9985485029909,
+            "Latitude": -37.80228080617898,
+            "Label": "Yarra",
+            "EndLongitude": 145.07,
+            "EndLatitude": -37.81
+          },
+          {
+            "LGA": "Melbourne",
+            "State": "Victoria",
+            "Count": 2010,
+            "Employed": 90347,
+            "Share": 0.02224755664272195,
+            "Longitude": 144.94376615969054,
+            "Latitude": -37.81065405285015,
+            "Label": "Melbourne",
+            "EndLongitude": 144.84,
+            "EndLatitude": -37.82
+          },
+          {
+            "LGA": "Darebin",
+            "State": "Victoria",
+            "Count": 1890,
+            "Employed": 79087,
+            "Share": 0.023897732876452513,
+            "Longitude": 145.01433312328692,
+            "Latitude": -37.733458607246874,
+            "Label": "Darebin",
+            "EndLongitude": 145.11,
+            "EndLatitude": -37.71
+          },
+          {
+            "LGA": "Port Phillip",
+            "State": "Victoria",
+            "Count": 1356,
+            "Employed": 61013,
+            "Share": 0.022224771769950667,
+            "Longitude": 144.9660223690271,
+            "Latitude": -37.8519088802449,
+            "Label": "Port Phillip",
+            "EndLongitude": 144.87,
+            "EndLatitude": -37.9
+          }
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "color": "#6c7165"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "Longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "Latitude",
+          "type": "quantitative"
+        },
+        "longitude2": {
+          "field": "EndLongitude"
+        },
+        "latitude2": {
+          "field": "EndLatitude"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "LGA": "Moreland",
+            "State": "Victoria",
+            "Count": 2620,
+            "Employed": 93061,
+            "Share": 0.02815357668625955,
+            "Longitude": 144.9488880362751,
+            "Latitude": -37.729918568433284,
+            "Label": "Moreland",
+            "EndLongitude": 144.87,
+            "EndLatitude": -37.68
+          },
+          {
+            "LGA": "Yarra",
+            "State": "Victoria",
+            "Count": 2260,
+            "Employed": 57177,
+            "Share": 0.039526382986165766,
+            "Longitude": 144.9985485029909,
+            "Latitude": -37.80228080617898,
+            "Label": "Yarra",
+            "EndLongitude": 145.07,
+            "EndLatitude": -37.81
+          },
+          {
+            "LGA": "Melbourne",
+            "State": "Victoria",
+            "Count": 2010,
+            "Employed": 90347,
+            "Share": 0.02224755664272195,
+            "Longitude": 144.94376615969054,
+            "Latitude": -37.81065405285015,
+            "Label": "Melbourne",
+            "EndLongitude": 144.84,
+            "EndLatitude": -37.82
+          },
+          {
+            "LGA": "Darebin",
+            "State": "Victoria",
+            "Count": 1890,
+            "Employed": 79087,
+            "Share": 0.023897732876452513,
+            "Longitude": 145.01433312328692,
+            "Latitude": -37.733458607246874,
+            "Label": "Darebin",
+            "EndLongitude": 145.11,
+            "EndLatitude": -37.71
+          },
+          {
+            "LGA": "Port Phillip",
+            "State": "Victoria",
+            "Count": 1356,
+            "Employed": 61013,
+            "Share": 0.022224771769950667,
+            "Longitude": 144.9660223690271,
+            "Latitude": -37.8519088802449,
+            "Label": "Port Phillip",
+            "EndLongitude": 144.87,
+            "EndLatitude": -37.9
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 18,
+        "align": "center",
+        "dy": -10,
+        "color": "#324238"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "EndLongitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "EndLatitude",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "Label"
+        }
+      }
+    }
+  ],
+  "center": true
+}

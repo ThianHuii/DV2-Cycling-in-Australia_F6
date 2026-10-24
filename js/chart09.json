@@ -1,0 +1,384 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "font": "Source Sans 3",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "labelColor": "#33463e",
+      "titleColor": "#33463e",
+      "titlePadding": 14,
+      "gridColor": "#e2e8e3",
+      "labelLimit": 230
+    },
+    "legend": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "orient": "bottom",
+      "titleLimit": 600,
+      "labelLimit": 300
+    },
+    "text": {
+      "fontSize": 18
+    },
+    "title": {
+      "font": "Bree Serif",
+      "fontSize": 28,
+      "anchor": "start"
+    }
+  },
+  "background": "#ffffff",
+  "spacing": 8,
+  "vconcat": [
+    {
+      "width": 620,
+      "height": 48,
+      "data": {
+        "sequence": {
+          "start": 0,
+          "stop": 366,
+          "as": "Index"
+        }
+      },
+      "transform": [
+        {
+          "calculate": "utc(SelectedYear,0,datum.Index+1)",
+          "as": "Date"
+        },
+        {
+          "filter": "utcyear(datum.Date)==SelectedYear && utcmonth(datum.Date)+1==SelectedMonth"
+        },
+        {
+          "calculate": "utcFormat(datum.Date,'%Y-%m-%d')",
+          "as": "DateKey"
+        },
+        {
+          "lookup": "DateKey",
+          "from": {
+            "data": {
+              "url": "data/daily-counts.csv",
+              "format": {
+                "type": "csv",
+                "parse": {
+                  "cycle_count": "number"
+                }
+              }
+            },
+            "key": "date",
+            "fields": [
+              "cycle_count"
+            ]
+          }
+        },
+        {
+          "calculate": "datum.cycle_count==null ? null : toNumber(datum.cycle_count)",
+          "as": "Count"
+        },
+        {
+          "calculate": "(utcday(datum.Date)+6)%7",
+          "as": "Weekday"
+        },
+        {
+          "calculate": "floor((utcdate(datum.Date)-1+(utcday(utc(SelectedYear,SelectedMonth-1,1))+6)%7)/7)",
+          "as": "Week"
+        },
+        {
+          "calculate": "utcdate(datum.Date)",
+          "as": "Day"
+        },
+        {
+          "calculate": "utcFormat(datum.Date,'%A, %d %B %Y')",
+          "as": "DateLabel"
+        },
+        {
+          "calculate": "isValid(datum.Count) ? format(datum.Count,',') : 'No data'",
+          "as": "CountLabel"
+        },
+        {
+          "aggregate": [
+            {
+              "op": "mean",
+              "field": "Count",
+              "as": "Average"
+            },
+            {
+              "op": "valid",
+              "field": "Count",
+              "as": "ObservedDays"
+            }
+          ]
+        },
+        {
+          "calculate": "'Observed days averaged '+format(datum.Average,',.0f')+'\\nbicycle crossings.'",
+          "as": "Note"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "lineBreak": "\n",
+        "fontStyle": "italic",
+        "fontSize": 18,
+        "color": "#41594d"
+      },
+      "encoding": {
+        "x": {
+          "value": 0
+        },
+        "y": {
+          "value": 0
+        },
+        "text": {
+          "field": "Note"
+        }
+      }
+    },
+    {
+      "data": {
+        "sequence": {
+          "start": 0,
+          "stop": 366,
+          "as": "Index"
+        }
+      },
+      "transform": [
+        {
+          "calculate": "utc(SelectedYear,0,datum.Index+1)",
+          "as": "Date"
+        },
+        {
+          "filter": "utcyear(datum.Date)==SelectedYear && utcmonth(datum.Date)+1==SelectedMonth"
+        },
+        {
+          "calculate": "utcFormat(datum.Date,'%Y-%m-%d')",
+          "as": "DateKey"
+        },
+        {
+          "lookup": "DateKey",
+          "from": {
+            "data": {
+              "url": "data/daily-counts.csv",
+              "format": {
+                "type": "csv",
+                "parse": {
+                  "cycle_count": "number"
+                }
+              }
+            },
+            "key": "date",
+            "fields": [
+              "cycle_count"
+            ]
+          }
+        },
+        {
+          "calculate": "datum.cycle_count==null ? null : toNumber(datum.cycle_count)",
+          "as": "Count"
+        },
+        {
+          "calculate": "(utcday(datum.Date)+6)%7",
+          "as": "Weekday"
+        },
+        {
+          "calculate": "floor((utcdate(datum.Date)-1+(utcday(utc(SelectedYear,SelectedMonth-1,1))+6)%7)/7)",
+          "as": "Week"
+        },
+        {
+          "calculate": "utcdate(datum.Date)",
+          "as": "Day"
+        },
+        {
+          "calculate": "utcFormat(datum.Date,'%A, %d %B %Y')",
+          "as": "DateLabel"
+        },
+        {
+          "calculate": "isValid(datum.Count) ? format(datum.Count,',') : 'No data'",
+          "as": "CountLabel"
+        }
+      ],
+      "spacing": 14,
+      "width": 620,
+      "height": {
+        "step": 62
+      },
+      "encoding": {
+        "x": {
+          "field": "Weekday",
+          "type": "ordinal",
+          "scale": {
+            "domain": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "paddingInner": 0.08,
+            "paddingOuter": 0.04
+          },
+          "axis": {
+            "title": null,
+            "orient": "top",
+            "labelExpr": "['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][datum.value]",
+            "labelFontSize": 18,
+            "labelPadding": 12,
+            "ticks": false,
+            "domain": false,
+            "labelAngle": 0
+          }
+        },
+        "y": {
+          "field": "Week",
+          "type": "ordinal",
+          "scale": {
+            "paddingInner": 0.08,
+            "paddingOuter": 0.04
+          },
+          "axis": null
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "rect",
+            "cornerRadius": 5,
+            "fill": "#e5e7eb"
+          }
+        },
+        {
+          "transform": [
+            {
+              "filter": "isValid(datum.Count)"
+            }
+          ],
+          "mark": {
+            "type": "rect",
+            "cornerRadius": 5
+          },
+          "encoding": {
+            "color": {
+              "field": "Count",
+              "type": "quantitative",
+              "title": "Daily bicycle count",
+              "scale": {
+                "domain": [
+                  0,
+                  3200
+                ],
+                "range": [
+                  "#f3f8e9",
+                  "#c2d99d",
+                  "#718c35",
+                  "#314b14"
+                ],
+                "clamp": true
+              },
+              "legend": {
+                "orient": "bottom",
+                "direction": "horizontal",
+                "gradientLength": 400,
+                "values": [
+                  0,
+                  800,
+                  1600,
+                  2400,
+                  3200
+                ],
+                "format": ",.0f",
+                "titleFontSize": 18,
+                "labelFontSize": 18,
+                "offset": 10
+              }
+            },
+            "tooltip": [
+              {
+                "field": "DateLabel",
+                "title": "Date"
+              },
+              {
+                "field": "CountLabel",
+                "title": "Bicycle count"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "fontSize": 19,
+            "fontWeight": "bold",
+            "dy": -13
+          },
+          "encoding": {
+            "text": {
+              "field": "Day"
+            },
+            "color": {
+              "condition": {
+                "test": "isValid(datum.Count) && datum.Count >= 2000",
+                "value": "#ffffff"
+              },
+              "value": "#243746"
+            },
+            "tooltip": [
+              {
+                "field": "DateLabel",
+                "title": "Date"
+              },
+              {
+                "field": "CountLabel",
+                "title": "Bicycle count"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "fontSize": 18,
+            "dy": 15
+          },
+          "encoding": {
+            "text": {
+              "field": "CountLabel"
+            },
+            "color": {
+              "condition": {
+                "test": "isValid(datum.Count) && datum.Count >= 2000",
+                "value": "#ffffff"
+              },
+              "value": "#243746"
+            },
+            "tooltip": [
+              {
+                "field": "DateLabel",
+                "title": "Date"
+              },
+              {
+                "field": "CountLabel",
+                "title": "Bicycle count"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "params": [
+    {
+      "name": "SelectedYear",
+      "value": 2020
+    },
+    {
+      "name": "SelectedMonth",
+      "value": 4
+    }
+  ],
+  "center": true
+}

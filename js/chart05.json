@@ -1,0 +1,424 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "font": "Source Sans 3",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "labelColor": "#33463e",
+      "titleColor": "#33463e",
+      "titlePadding": 14,
+      "gridColor": "#e2e8e3",
+      "labelLimit": 230
+    },
+    "legend": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "orient": "bottom",
+      "titleLimit": 600,
+      "labelLimit": 300
+    },
+    "text": {
+      "fontSize": 18
+    },
+    "title": {
+      "font": "Bree Serif",
+      "fontSize": 28,
+      "anchor": "start"
+    }
+  },
+  "background": "#ffffff",
+  "spacing": 6,
+  "vconcat": [
+    {
+      "width": 620,
+      "height": 52,
+      "data": {
+        "values": [
+          {
+            "Note": "Men account for 72% of bicycle\ncommuters."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "font": "Source Sans 3",
+        "fontSize": 18,
+        "fontWeight": "normal",
+        "fontStyle": "italic",
+        "color": "#41594d",
+        "align": "left",
+        "baseline": "top",
+        "lineBreak": "\n",
+        "lineHeight": 24
+      },
+      "encoding": {
+        "x": {
+          "value": 0
+        },
+        "y": {
+          "value": 0
+        },
+        "text": {
+          "field": "Note"
+        }
+      }
+    },
+    {
+      "width": 440,
+      "height": 36,
+      "usermeta": {
+        "fixedLegend": true
+      },
+      "data": {
+        "values": [
+          {
+            "Label": "Male",
+            "Colour": "#a67813",
+            "X": 12,
+            "TextX": 30,
+            "Y": 16
+          },
+          {
+            "Label": "Female",
+            "Colour": "#536971",
+            "X": 232,
+            "TextX": 250,
+            "Y": 16
+          }
+        ]
+      },
+      "encoding": {
+        "y": {
+          "field": "Y",
+          "type": "quantitative",
+          "scale": null,
+          "axis": null
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "point",
+            "shape": "square",
+            "filled": true,
+            "size": 130,
+            "opacity": 1
+          },
+          "encoding": {
+            "x": {
+              "field": "X",
+              "type": "quantitative",
+              "scale": null,
+              "axis": null
+            },
+            "color": {
+              "field": "Colour",
+              "type": "nominal",
+              "scale": null,
+              "legend": null
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "font": "Source Sans 3",
+            "fontSize": 18,
+            "align": "left",
+            "baseline": "middle",
+            "color": "#33463e"
+          },
+          "encoding": {
+            "x": {
+              "field": "TextX",
+              "type": "quantitative",
+              "scale": null,
+              "axis": null
+            },
+            "text": {
+              "field": "Label"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "data": {
+        "url": "data/age-sex.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "Count": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "calculate": "datum.Sex == 'Male' ? -datum.Count : datum.Count",
+          "as": "PlotValue"
+        }
+      ],
+      "spacing": 18,
+      "width": 620,
+      "height": 280,
+      "encoding": {
+        "y": {
+          "field": "Age",
+          "type": "ordinal",
+          "sort": [
+            "15\u201324",
+            "25\u201334",
+            "35\u201344",
+            "45\u201354",
+            "55\u201364",
+            "65\u201374",
+            "75+"
+          ],
+          "title": "Age group (years)",
+          "axis": {
+            "labelPadding": 10,
+            "labelFontSize": 18,
+            "titlePadding": 30,
+            "ticks": false,
+            "domain": false
+          }
+        },
+        "x": {
+          "field": "PlotValue",
+          "type": "quantitative",
+          "title": "Number of bicycle commuters",
+          "scale": {
+            "domain": [
+              -16000,
+              16000
+            ],
+            "nice": false
+          },
+          "axis": {
+            "values": [
+              -15000,
+              -7500,
+              0,
+              7500,
+              15000
+            ],
+            "labelExpr": "format(abs(datum.value), ',.0f')",
+            "grid": true,
+            "gridColor": "#e5e7eb",
+            "titlePadding": 14,
+            "labelPadding": 7,
+            "title": "Bicycle commuters"
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "size": 29,
+            "cornerRadiusEnd": 3
+          },
+          "encoding": {
+            "color": {
+              "field": "Sex",
+              "type": "nominal",
+              "scale": {
+                "domain": [
+                  "Male",
+                  "Female"
+                ],
+                "range": [
+                  "#a67813",
+                  "#536971"
+                ]
+              },
+              "legend": null
+            },
+            "tooltip": [
+              {
+                "field": "Age",
+                "type": "ordinal",
+                "title": "Age group (years)"
+              },
+              {
+                "field": "Sex",
+                "type": "nominal",
+                "title": "Sex"
+              },
+              {
+                "field": "Count",
+                "type": "quantitative",
+                "title": "Bicycle commuters",
+                "format": ","
+              }
+            ]
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {}
+            ]
+          },
+          "mark": {
+            "type": "rule",
+            "color": "#64748b",
+            "strokeWidth": 1
+          },
+          "encoding": {
+            "x": {
+              "datum": 0,
+              "type": "quantitative"
+            },
+            "y": {
+              "value": 0
+            },
+            "y2": {
+              "value": 280
+            }
+          }
+        }
+      ]
+    },
+    {
+      "width": 620,
+      "height": 58,
+      "data": {
+        "url": "data/age-sex.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "Count": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.Age==='75+'"
+        },
+        {
+          "calculate": "datum.Sex==='Male' ? -datum.Count : datum.Count",
+          "as": "PlotValue"
+        }
+      ],
+      "title": {
+        "text": "Age 75+: 93 men, 17 women",
+        "font": "Source Sans 3",
+        "fontSize": 18,
+        "fontWeight": "normal",
+        "anchor": "start"
+      },
+      "encoding": {
+        "x": {
+          "field": "PlotValue",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              -100,
+              100
+            ],
+            "nice": false
+          },
+          "axis": {
+            "title": "Commuters \u00b7 75+ detail",
+            "values": [
+              -100,
+              -50,
+              0,
+              50,
+              100
+            ],
+            "labelExpr": "format(abs(datum.value),',.0f')",
+            "grid": false
+          }
+        },
+        "y": {
+          "value": 32
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "size": 28
+          },
+          "encoding": {
+            "color": {
+              "condition": {
+                "test": "datum.Sex==='Male'",
+                "value": "#a67813"
+              },
+              "value": "#536971",
+              "legend": null
+            },
+            "x2": {
+              "datum": 0
+            },
+            "tooltip": [
+              {
+                "field": "Sex"
+              },
+              {
+                "field": "Count",
+                "format": ",.0f"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "dy": -25,
+            "fontSize": 18,
+            "color": "#33463e"
+          },
+          "encoding": {
+            "text": {
+              "field": "Count",
+              "format": ",.0f"
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {}
+            ]
+          },
+          "mark": {
+            "type": "rule",
+            "color": "#64748b"
+          },
+          "encoding": {
+            "x": {
+              "datum": 0
+            },
+            "y": {
+              "value": 5
+            },
+            "y2": {
+              "value": 55
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "resolve": {
+    "scale": {
+      "x": "independent",
+      "y": "independent"
+    }
+  },
+  "center": true,
+  "padding": {
+    "left": 24,
+    "right": 24,
+    "top": 12,
+    "bottom": 4
+  }
+}

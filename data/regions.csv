@@ -1,0 +1,6 @@
+region,bicycle_count_2018,share_pct,x0,x1,y0,y1,label_x,label_y,label
+Sydney City,3702,54.27,0,54.2656,0,100,27.1328,50,Sydney City | 54.3%
+Inner North,798,11.70,54.2656,65.9631,0,100,60.1144,50,Inner North | 11.7%
+Inner West,994,14.57,65.9631,100,0,42.8079,82.9815,21.4040,Inner West | 14.6%
+North West,592,8.68,65.9631,81.1362,42.8079,100,73.5496,71.4040,North West | 8.7%
+Other,736,10.78,81.1362,100,42.8079,100,90.5681,71.4040,Other | 10.8%
