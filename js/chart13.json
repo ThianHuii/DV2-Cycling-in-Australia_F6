@@ -1,0 +1,163 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 620,
+  "height": 420,
+  "padding": 20,
+  "data": {
+    "url": "data/monthly-counts.csv",
+    "format": {
+      "type": "csv",
+      "parse": {
+        "count": "number",
+        "month_order": "number"
+      }
+    }
+  },
+  "transform": [
+    {
+      "filter": "datum.station==='Sydney Harbour Bridge' || datum.station==='Anzac Bridge'"
+    },
+    {
+      "pivot": "station",
+      "value": "count",
+      "groupby": [
+        "month",
+        "month_date",
+        "month_order"
+      ]
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "Sydney Harbour Bridge",
+      "type": "quantitative",
+      "scale": {
+        "zero": false,
+        "domain": [
+          1250,
+          2200
+        ]
+      },
+      "axis": {
+        "title": [
+          "Sydney Harbour Bridge",
+          "Recorded bicycle count"
+        ],
+        "format": ","
+      }
+    },
+    "y": {
+      "field": "Anzac Bridge",
+      "type": "quantitative",
+      "scale": {
+        "zero": false,
+        "domain": [
+          1000,
+          1650
+        ]
+      },
+      "axis": {
+        "title": [
+          "Anzac Bridge",
+          "Recorded bicycle count"
+        ],
+        "format": ","
+      }
+    },
+    "tooltip": [
+      {
+        "field": "month",
+        "title": "Month"
+      },
+      {
+        "field": "month_date",
+        "title": "Period"
+      },
+      {
+        "field": "Sydney Harbour Bridge",
+        "type": "quantitative",
+        "format": ","
+      },
+      {
+        "field": "Anzac Bridge",
+        "type": "quantitative",
+        "format": ","
+      }
+    ]
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "color": "#526b78",
+        "strokeWidth": 2,
+        "opacity": 0.65
+      },
+      "encoding": {
+        "order": {
+          "field": "month_order",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 110,
+        "opacity": 1,
+        "stroke": "white",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "color": {
+          "condition": {
+            "test": "datum.month==='Jun'",
+            "value": "#b84b26"
+          },
+          "value": "#526b78"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "dy": -15,
+        "fontSize": 18,
+        "color": "#203d32"
+      },
+      "encoding": {
+        "text": {
+          "field": "month_order"
+        }
+      }
+    }
+  ],
+  "title": {
+    "text": "Both bridges reach their lowest count in June.",
+    "subtitle": [
+      "Numbers follow October (1) through September (12).",
+      "Follow the connecting line in numerical order."
+    ],
+    "anchor": "start",
+    "fontSize": 22,
+    "subtitleFontSize": 18,
+    "subtitlePadding": 10
+  },
+  "config": {
+    "font": "Source Sans 3",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 18,
+      "titleFontSize": 18,
+      "titlePadding": 14,
+      "gridColor": "#e2e8e3"
+    },
+    "title": {
+      "font": "Bree Serif",
+      "subtitleFont": "Source Sans 3"
+    }
+  },
+  "background": "white"
+}
