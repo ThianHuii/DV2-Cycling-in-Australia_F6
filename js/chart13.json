@@ -1,8 +1,19 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 620,
-  "height": 420,
-  "padding": 20,
+  "width": "container",
+  "height": 480,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding",
+    "resize": true
+  },
+  "padding": {
+    "left": 15,
+    "right": 30,
+    "top": 20,
+    "bottom": 15
+  },
+  "background": "white",
   "data": {
     "url": "data/monthly-counts.csv",
     "format": {
@@ -33,17 +44,17 @@
       "type": "quantitative",
       "scale": {
         "zero": false,
-        "domain": [
-          1250,
-          2200
-        ]
+        "nice": false,
+        "domain": [1250, 2200]
       },
       "axis": {
-        "title": [
-          "Sydney Harbour Bridge",
-          "Recorded bicycle count"
-        ],
-        "format": ","
+        "title": "Sydney Harbour Bridge · Recorded bicycle count",
+        "format": ".0f",
+        "values": [1300, 1500, 1700, 1900, 2100],
+        "labelAngle": 0,
+        "labelPadding": 10,
+        "labelOverlap": true,
+        "titlePadding": 22
       }
     },
     "y": {
@@ -51,17 +62,15 @@
       "type": "quantitative",
       "scale": {
         "zero": false,
-        "domain": [
-          1000,
-          1650
-        ]
+        "nice": false,
+        "domain": [1000, 1650]
       },
       "axis": {
-        "title": [
-          "Anzac Bridge",
-          "Recorded bicycle count"
-        ],
-        "format": ","
+        "title": "Anzac Bridge · Recorded bicycle count",
+        "format": ".0f",
+        "values": [1000, 1100, 1200, 1300, 1400, 1500, 1600],
+        "labelPadding": 12,
+        "titlePadding": 30
       }
     },
     "tooltip": [
@@ -76,12 +85,14 @@
       {
         "field": "Sydney Harbour Bridge",
         "type": "quantitative",
-        "format": ","
+        "title": "Sydney Harbour Bridge",
+        "format": ".0f"
       },
       {
         "field": "Anzac Bridge",
         "type": "quantitative",
-        "format": ","
+        "title": "Anzac Bridge",
+        "format": ".0f"
       }
     ]
   },
@@ -103,7 +114,7 @@
     {
       "mark": {
         "type": "circle",
-        "size": 110,
+        "size": 130,
         "opacity": 1,
         "stroke": "white",
         "strokeWidth": 1.5
@@ -119,9 +130,72 @@
       }
     },
     {
+      "transform": [
+        {
+          "filter": "datum.month_order!==2 && datum.month_order!==11 && datum.month_order!==12"
+        }
+      ],
       "mark": {
         "type": "text",
-        "dy": -15,
+        "dy": -17,
+        "fontSize": 18,
+        "color": "#203d32"
+      },
+      "encoding": {
+        "text": {
+          "field": "month_order",
+          "format": ".0f"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.month_order===2"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "dx": 14,
+        "dy": 16,
+        "fontSize": 18,
+        "color": "#203d32"
+      },
+      "encoding": {
+        "text": {
+          "field": "month_order"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.month_order===11"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "dx": -15,
+        "dy": -18,
+        "fontSize": 18,
+        "color": "#203d32"
+      },
+      "encoding": {
+        "text": {
+          "field": "month_order"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.month_order===12"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "dx": 16,
+        "dy": 18,
         "fontSize": 18,
         "color": "#203d32"
       },
@@ -141,7 +215,8 @@
     "anchor": "start",
     "fontSize": 22,
     "subtitleFontSize": 18,
-    "subtitlePadding": 10
+    "subtitlePadding": 10,
+    "offset": 20
   },
   "config": {
     "font": "Source Sans 3",
@@ -151,13 +226,13 @@
     "axis": {
       "labelFontSize": 18,
       "titleFontSize": 18,
-      "titlePadding": 14,
+      "labelColor": "#33463e",
+      "titleColor": "#33463e",
       "gridColor": "#e2e8e3"
     },
     "title": {
       "font": "Bree Serif",
       "subtitleFont": "Source Sans 3"
     }
-  },
-  "background": "white"
+  }
 }
